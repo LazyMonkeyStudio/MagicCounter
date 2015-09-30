@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AbsoluteLayout;
 import android.widget.Button;
 
 
@@ -14,6 +15,7 @@ public class MainActivity extends ActionBarActivity { //test test test
     int[] commanderHPs = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
     int[] poisonDMG = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
     int selectedIndex = 0;
+    int amount = 1;
 
     boolean playerSELECTED = true;
     boolean commanderSELECTED = false;
@@ -22,8 +24,10 @@ public class MainActivity extends ActionBarActivity { //test test test
     Button selectedButton;
     Button previousButton;
 
+    Button selectedAmount;
+    Button previousAmount;
+
     Button selectedPlayer;
-    Button previousPlayer;
 
     Button[] buttonList;
 
@@ -32,25 +36,14 @@ public class MainActivity extends ActionBarActivity { //test test test
     Button commander;
     Button reset;
 
-    Button player1;
-    Button player2;
-    Button player3;
-    Button player4;
-    Button player5;
-    Button player6;
-    Button player7;
-    Button player8;
+    Button one, two, three, four, five, six, seven, eight, nine, ten;
+    Button player1, player2, player3, player4, player5, player6, player7, player8;
+    Button p1_minus, p2_minus, p3_minus, p4_minus, p5_minus, p6_minus, p7_minus, p8_minus;
+    Button p1_plus, p2_plus, p3_plus, p4_plus, p5_plus, p6_plus, p7_plus, p8_plus;
 
-    Button plus1;
-    Button plus2;
-    Button plus3;
-    Button plus4;
-    Button plus5;
-    Button minus1;
-    Button minus2;
-    Button minus3;
-    Button minus4;
-    Button minus5;
+    //Button[] listOfButtons_temp = new Button[8];
+    public AbsoluteLayout layout;
+    PlayerManager player_manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,21 +71,54 @@ public class MainActivity extends ActionBarActivity { //test test test
         commander = (Button)findViewById(R.id.commander);
         selectedButton = regular;
 
-        plus1 = (Button)findViewById(R.id.plus1);
-        plus2 = (Button)findViewById(R.id.plus2);
-        plus3 = (Button)findViewById(R.id.plus3);
-        plus4 = (Button)findViewById(R.id.plus4);
-        plus5 = (Button)findViewById(R.id.plus5);
-        minus1 = (Button)findViewById(R.id.minus1);
-        minus2 = (Button)findViewById(R.id.minus2);
-        minus3 = (Button)findViewById(R.id.minus3);
-        minus4 = (Button)findViewById(R.id.minus4);
-        minus5 = (Button)findViewById(R.id.minus5);
+        p1_plus = (Button)findViewById(R.id.p1_plus);
+        p2_plus = (Button)findViewById(R.id.p2_plus);
+        p3_plus = (Button)findViewById(R.id.p3_plus);
+        p4_plus = (Button)findViewById(R.id.p4_plus);
+        p5_plus = (Button)findViewById(R.id.p5_plus);
+        p6_plus = (Button)findViewById(R.id.p6_plus);
+        p7_plus = (Button)findViewById(R.id.p7_plus);
+        p8_plus = (Button)findViewById(R.id.p8_plus);
+        p1_minus = (Button)findViewById(R.id.p1_minus);
+        p2_minus = (Button)findViewById(R.id.p2_minus);
+        p3_minus = (Button)findViewById(R.id.p3_minus);
+        p4_minus = (Button)findViewById(R.id.p4_minus);
+        p5_minus = (Button)findViewById(R.id.p5_minus);
+        p6_minus = (Button)findViewById(R.id.p6_minus);
+        p7_minus = (Button)findViewById(R.id.p7_minus);
+        p8_minus = (Button)findViewById(R.id.p8_minus);
+
+        one = (Button)findViewById(R.id.one);
+        two = (Button)findViewById(R.id.two);
+        three = (Button)findViewById(R.id.three);
+        four = (Button)findViewById(R.id.four);
+        five = (Button)findViewById(R.id.five);
+        six = (Button)findViewById(R.id.six);
+        seven = (Button)findViewById(R.id.seven);
+        eight = (Button)findViewById(R.id.eight);
+        nine = (Button)findViewById(R.id.nine);
+        ten = (Button)findViewById(R.id.ten);
+        selectedAmount = one;
+
+        //testing procedurely creating buttons
+        //Button test = new Button(this); //new button, this is a widget
+        //test.setText("Test");           //sets text, not required
+        //test.setX(150);                 //sets x position on screen
+        //test.setY(150);                 //sets y position on screen
+        //test.setWidth(70);              //sets width of button
+        //test.setHeight(35);             //sets height of button
+                                        //finds the specific layout to no where to draw the button
+        layout = (AbsoluteLayout) findViewById(R.id.absoluteLayout);
+        //layout.addView(test);           //adds button to layout
+
+        //player_manager = new PlayerManager(this);
+        //endtest
 
         buttonList = new Button[] { player1, player2, player3, player4, player5, player6, player7, player8,
                                     reset, regular, commander, poison,
-                                    plus1, plus2, plus3, plus4, plus5,
-                                    minus1, minus2, minus3, minus4, minus5};
+                                    one, two, three, four, five, six, seven, eight, nine, ten,
+                                    p1_plus, p2_plus, p3_plus, p4_plus, p5_plus, p6_plus, p7_plus, p8_plus,
+                                    p1_minus, p2_minus, p3_minus, p4_minus, p5_minus, p6_minus, p7_minus, p8_minus };
 
         //for(int i = 0; i < buttonList.length; i++)
         for(Button b : buttonList)
@@ -143,7 +169,7 @@ public class MainActivity extends ActionBarActivity { //test test test
         poisonSELECTED = false;
         commanderSELECTED = false;
 
-        selectedPlayer = null;
+        selectedAmount = null;
         selectedButton = (Button)findViewById(R.id.regular);
 
         redrawButtons();
@@ -164,75 +190,108 @@ public class MainActivity extends ActionBarActivity { //test test test
             previousButton = selectedButton;
         }
 
-        if(selectedPlayer != previousPlayer)
+        if(selectedAmount != previousAmount)
         {
-            if(previousPlayer != null)
-                previousPlayer.setBackground(getResources().getDrawable(R.drawable.deselected_color));
-            if(selectedPlayer != null)
-                selectedPlayer.setBackground(getResources().getDrawable(R.drawable.selected_color));
+            if(previousAmount != null)
+                previousAmount.setBackground(getResources().getDrawable(R.drawable.deselected_color));
+            if(selectedAmount != null)
+                selectedAmount.setBackground(getResources().getDrawable(R.drawable.selected_color));
 
-            previousPlayer = selectedPlayer;
+            previousAmount = selectedAmount;
         }
-    }
-
-    public void selectPlayer1(View v)
-    {
-        selectedIndex = 0;
-        selectedPlayer = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectPlayer2(View v)
-    {
-        selectedIndex = 1;
-        selectedPlayer = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectPlayer3(View v)
-    {
-        selectedIndex = 2;
-        selectedPlayer = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectPlayer4(View v)
-    {
-        selectedIndex = 3;
-        selectedPlayer = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectPlayer5(View v)
-    {
-        selectedIndex = 4;
-        selectedPlayer = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectPlayer6(View v)
-    {
-        selectedIndex = 5;
-        selectedPlayer = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectPlayer7(View v)
-    {
-        selectedIndex = 6;
-        selectedPlayer = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectPlayer8(View v)
-    {
-        selectedIndex = 7;
-        selectedPlayer = (Button)v;
-        redrawButtons();
     }
 
     public void setSelectedHP(int value)
     {
+
+        //String[] parts = String.valueOf(selectedAmount.getId()).split("_");
+        //String currentPlayer = parts[0];
+
+        int ID = selectedPlayer.getId();
+        switch(ID)
+        {
+            case R.id.p1_plus:
+                selectedIndex = 0;
+                selectedPlayer = player1;
+                break;
+
+            case R.id.p2_plus:
+                selectedIndex = 1;
+                selectedPlayer = player2;
+                break;
+
+            case R.id.p3_plus:
+                selectedIndex = 2;
+                selectedPlayer = player3;
+                break;
+
+            case R.id.p4_plus:
+                selectedIndex = 3;
+                selectedPlayer = player4;
+                break;
+
+            case R.id.p5_plus:
+                selectedIndex = 4;
+                selectedPlayer = player5;
+                break;
+
+            case R.id.p6_plus:
+                selectedIndex = 5;
+                selectedPlayer = player6;
+                break;
+
+            case R.id.p7_plus:
+                selectedIndex = 6;
+                selectedPlayer = player7;
+                break;
+
+            case R.id.p8_plus:
+                selectedIndex = 7;
+                selectedPlayer = player8;
+                break;
+
+            case R.id.p1_minus:
+                selectedIndex = 0;
+                selectedPlayer = player1;
+                break;
+
+            case R.id.p2_minus:
+                selectedIndex = 1;
+                selectedPlayer = player2;
+                break;
+
+            case R.id.p3_minus:
+                selectedIndex = 2;
+                selectedPlayer = player3;
+                break;
+
+            case R.id.p4_minus:
+                selectedIndex = 3;
+                selectedPlayer = player4;
+                break;
+
+            case R.id.p5_minus:
+                selectedIndex = 4;
+                selectedPlayer = player5;
+                break;
+
+            case R.id.p6_minus:
+                selectedIndex = 5;
+                selectedPlayer = player6;
+                break;
+
+            case R.id.p7_minus:
+                selectedIndex = 6;
+                selectedPlayer = player7;
+                break;
+
+            case R.id.p8_minus:
+                selectedIndex = 7;
+                selectedPlayer = player8;
+                break;
+        }
+
+
         if (selectedPlayer != null)
         {
             if (playerSELECTED) {
@@ -298,53 +357,85 @@ public class MainActivity extends ActionBarActivity { //test test test
         redrawButtons();
     }
 
-    public void plus5OnClick(View v)
+    public void selectPlus(View v)
     {
-        setSelectedHP(5);
+        selectedPlayer = (Button)v;
+        setSelectedHP(amount);
     }
 
-    public void plus4OnClick(View v)
+    public void selectMinus(View v)
     {
-        setSelectedHP(4);
+        selectedPlayer = (Button)v;
+        setSelectedHP(-amount);
     }
 
-    public void plus3OnClick(View v)
+    public void selectOne(View v)
     {
-        setSelectedHP(3);
+        amount = 1;
+        selectedAmount = (Button)v;
+        redrawButtons();
     }
 
-    public void plus2OnClick(View v)
+    public void selectTwo(View v)
     {
-        setSelectedHP(2);
+        amount = 2;
+        selectedAmount = (Button)v;
+        redrawButtons();
     }
 
-    public void plus1OnClick(View v)
+    public void selectThree(View v)
     {
-        setSelectedHP(1);
+        amount = 3;
+        selectedAmount = (Button)v;
+        redrawButtons();
     }
 
-    public void minus5OnClick(View v)
+    public void selectFour(View v)
     {
-        setSelectedHP(-5);
+        amount = 4;
+        selectedAmount = (Button)v;
+        redrawButtons();
     }
 
-    public void minus4OnClick(View v)
+    public void selectFive(View v)
     {
-        setSelectedHP(-4);
+        amount = 5;
+        selectedAmount = (Button)v;
+        redrawButtons();
     }
 
-    public void minus3OnClick(View v)
+    public void selectSix(View v)
     {
-        setSelectedHP(-3);
+        amount = 6;
+        selectedAmount = (Button)v;
+        redrawButtons();
     }
 
-    public void minus2OnClick(View v)
+    public void selectSeven(View v)
     {
-        setSelectedHP(-2);
+        amount = 7;
+        selectedAmount = (Button)v;
+        redrawButtons();
     }
 
-    public void minus1OnClick(View v)
+    public void selectEight(View v)
     {
-        setSelectedHP(-1);
+        amount = 8;
+        selectedAmount = (Button)v;
+        redrawButtons();
+    }
+
+    public void selectNine(View v)
+    {
+        amount = 9;
+        selectedAmount = (Button)v;
+        redrawButtons();
+    }
+
+    public void selectTen(View v)
+    {
+        amount = 10;
+        selectedAmount = (Button)v;
+        redrawButtons();
     }
 }
