@@ -8,12 +8,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import java.util.Random;
 
 
 public class MainActivity extends ActionBarActivity { //test test test
-    int[] playerHPs = new int[] {20, 20, 20, 20, 20, 20, 20, 20 };
-    int[] commanderHPs = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-    int[] poisonDMG = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+    //int[] playerHPs = new int[] {20, 20, 20, 20, 20, 20, 20, 20 };
+    //int[] commanderHPs = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+    //int[] poisonDMG = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
     int selectedIndex = 0;
     int amount = 1;
 
@@ -37,56 +43,62 @@ public class MainActivity extends ActionBarActivity { //test test test
     Button reset;
 
     Button one, two, three, four, five, six, seven, eight, nine, ten;
-    Button player1, player2, player3, player4, player5, player6, player7, player8;
-    Button p1_minus, p2_minus, p3_minus, p4_minus, p5_minus, p6_minus, p7_minus, p8_minus;
-    Button p1_plus, p2_plus, p3_plus, p4_plus, p5_plus, p6_plus, p7_plus, p8_plus;
+    EditText player1, player2, player3, player4, player5, player6, player7, player8;
+    Button selectedName;
 
     //Button[] listOfButtons_temp = new Button[8];
     public AbsoluteLayout layout;
     PlayerManager player_manager;
 
+    private enum GAME_STATE
+    {
+        pause,
+        play,
+        gameover,
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_players);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         onCreate_SetDefaultButtons();
+        player_manager = new PlayerManager(this);
+        //Player player = new Player(this, new int[] { 25, 50 });
+        //player.createPlayer();
+
+        //int count = 0;
+        //while (GAME_STATE != GAME_STATE.gameover)
+        //{
+        //    count += 1;
+        //    player1.setText(count);
+        //}
+    }
+
+    private void findPlayerSetActivityObjects()
+    {
+        player1 = (EditText)findViewById(R.id.player1_name);
+        player2 = (EditText)findViewById(R.id.player2_name);
+        player3 = (EditText)findViewById(R.id.player3_name);
+        player4 = (EditText)findViewById(R.id.player4_name);
+        player5 = (EditText)findViewById(R.id.player5_name);
+        player6 = (EditText)findViewById(R.id.player6_name);
+        player7 = (EditText)findViewById(R.id.player7_name);
+        player8 = (EditText)findViewById(R.id.player8_name);
     }
 
     private void onCreate_SetDefaultButtons()
     {
-        player1 = (Button)findViewById(R.id.player1);
-        player2 = (Button)findViewById(R.id.player2);
-        player3 = (Button)findViewById(R.id.player3);
-        player4 = (Button)findViewById(R.id.player4);
-        player5 = (Button)findViewById(R.id.player5);
-        player6 = (Button)findViewById(R.id.player6);
-        player7 = (Button)findViewById(R.id.player7);
-        player8 = (Button)findViewById(R.id.player8);
-
         reset = (Button)findViewById(R.id.reset);
         regular = (Button)findViewById(R.id.regular);
         poison = (Button)findViewById(R.id.poison);
         commander = (Button)findViewById(R.id.commander);
         selectedButton = regular;
-
-        p1_plus = (Button)findViewById(R.id.p1_plus);
-        p2_plus = (Button)findViewById(R.id.p2_plus);
-        p3_plus = (Button)findViewById(R.id.p3_plus);
-        p4_plus = (Button)findViewById(R.id.p4_plus);
-        p5_plus = (Button)findViewById(R.id.p5_plus);
-        p6_plus = (Button)findViewById(R.id.p6_plus);
-        p7_plus = (Button)findViewById(R.id.p7_plus);
-        p8_plus = (Button)findViewById(R.id.p8_plus);
-        p1_minus = (Button)findViewById(R.id.p1_minus);
-        p2_minus = (Button)findViewById(R.id.p2_minus);
-        p3_minus = (Button)findViewById(R.id.p3_minus);
-        p4_minus = (Button)findViewById(R.id.p4_minus);
-        p5_minus = (Button)findViewById(R.id.p5_minus);
-        p6_minus = (Button)findViewById(R.id.p6_minus);
-        p7_minus = (Button)findViewById(R.id.p7_minus);
-        p8_minus = (Button)findViewById(R.id.p8_minus);
 
         one = (Button)findViewById(R.id.one);
         two = (Button)findViewById(R.id.two);
@@ -111,14 +123,10 @@ public class MainActivity extends ActionBarActivity { //test test test
         layout = (AbsoluteLayout) findViewById(R.id.absoluteLayout);
         //layout.addView(test);           //adds button to layout
 
-        //player_manager = new PlayerManager(this);
         //endtest
 
-        buttonList = new Button[] { player1, player2, player3, player4, player5, player6, player7, player8,
-                                    reset, regular, commander, poison,
-                                    one, two, three, four, five, six, seven, eight, nine, ten,
-                                    p1_plus, p2_plus, p3_plus, p4_plus, p5_plus, p6_plus, p7_plus, p8_plus,
-                                    p1_minus, p2_minus, p3_minus, p4_minus, p5_minus, p6_minus, p7_minus, p8_minus };
+        buttonList = new Button[] {reset, regular, commander, poison,
+                                    one, two, three, four, five, six, seven, eight, nine, ten };
 
         //for(int i = 0; i < buttonList.length; i++)
         for(Button b : buttonList)
@@ -152,25 +160,67 @@ public class MainActivity extends ActionBarActivity { //test test test
         return super.onOptionsItemSelected(item);
     }
 
+    public void OnClick_confirm(View v)
+    {
+        findPlayerSetActivityObjects();
+        player_manager.playerNames[0] = String.valueOf(player1.getText());
+        player_manager.playerNames[1] = String.valueOf(player2.getText());
+        player_manager.playerNames[2] = String.valueOf(player3.getText());
+        player_manager.playerNames[3] = String.valueOf(player4.getText());
+        player_manager.playerNames[4] = String.valueOf(player5.getText());
+        player_manager.playerNames[5] = String.valueOf(player6.getText());
+        player_manager.playerNames[6] = String.valueOf(player7.getText());
+        player_manager.playerNames[7] = String.valueOf(player8.getText());
+        setContentView(R.layout.activity_main);
+        onCreate_SetDefaultButtons();
+        player_manager.reLoad();
+        selectFirstPlayer();
+    }
+
+    private void selectFirstPlayer()
+    {
+        Random rand = new Random();
+        int n = rand.nextInt(8);
+        if(player_manager.playerList[n] != null)
+        {
+            selectedName = player_manager.playerList[n].player_obj;
+            selectedName.setBackground(getResources().getDrawable(R.drawable.selected_color));
+        }
+        else if (player_manager.playerList[0] != null)
+            selectFirstPlayer();
+    }
+
     public void resetHPs(View v)
     {
-        playerHPs = new int[] {20, 20, 20, 20, 20, 20, 20, 20, 20, 20 };
-        commanderHPs = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        poisonDMG = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        //playerHPs = new int[] {20, 20, 20, 20, 20, 20, 20, 20, 20, 20 };
+        //commanderHPs = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        //poisonDMG = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        Button[] playerList = new Button[] { player1, player2, player3, player4, player5, player6, player7, player8 };
+        //Button[] playerList = new Button[] { player1, player2, player3, player4, player5, player6, player7, player8 };
+        //Player[] playerList = player_manager.playerList;
 
-        for(int i = 0; i < playerList.length; i++)
+        if(player_manager.playerList != null)
         {
-            playerList[i].setText(String.valueOf(playerHPs[i]));
+            for (int i = 0; i < player_manager.playerList.length; i++) {
+                //playerList[i].setText(String.valueOf(playerHPs[i]));
+                if (player_manager.playerList[i] != null)
+                //player_manager.playerList[i].player_obj.setText(String.valueOf(playerHPs[i]));
+                {
+                    //Button player_obj = player_manager.playerList[i].player_obj;
+                    Player player = player_manager.playerList[i];
+                    player.resetPlayer();
+                    //player_obj.setText(player.health);
+                }
+            }
         }
 
         playerSELECTED = true;
         poisonSELECTED = false;
         commanderSELECTED = false;
 
-        selectedAmount = null;
-        selectedButton = (Button)findViewById(R.id.regular);
+        selectedAmount = one;
+        amount = 1;
+        selectedButton = regular;
 
         redrawButtons();
     }
@@ -210,7 +260,7 @@ public class MainActivity extends ActionBarActivity { //test test test
         int ID = selectedPlayer.getId();
         switch(ID)
         {
-            case R.id.p1_plus:
+            /*case R.id.p1_plus:
                 selectedIndex = 0;
                 selectedPlayer = player1;
                 break;
@@ -288,39 +338,46 @@ public class MainActivity extends ActionBarActivity { //test test test
             case R.id.p8_minus:
                 selectedIndex = 7;
                 selectedPlayer = player8;
-                break;
+                break;*/
         }
 
 
         if (selectedPlayer != null)
         {
             if (playerSELECTED) {
-                playerHPs[selectedIndex] += value;
-                selectedPlayer.setText(String.valueOf(playerHPs[selectedIndex]));
+                //playerHPs[selectedIndex] += value;
+                //selectedPlayer.setText(String.valueOf(playerHPs[selectedIndex]));
             } else if (commanderSELECTED) {
-                commanderHPs[selectedIndex] += value;
-                selectedPlayer.setText(String.valueOf(commanderHPs[selectedIndex]));
+                //commanderHPs[selectedIndex] += value;
+                //selectedPlayer.setText(String.valueOf(commanderHPs[selectedIndex]));
             } else if (poisonSELECTED) {
-                poisonDMG[selectedIndex] += value;
-                selectedPlayer.setText(String.valueOf(poisonDMG[selectedIndex]));
+                //poisonDMG[selectedIndex] += value;
+                //selectedPlayer.setText(String.valueOf(poisonDMG[selectedIndex]));
             }
         }
     }
 
     private void switchHPs()
     {
-        Button[] playerList = new Button[] { player1, player2, player3, player4, player5, player6, player7, player8 };
+        //Button[] playerList = new Button[] { player1, player2, player3, player4, player5, player6, player7, player8 };
 
-        for(int i = 0; i < playerList.length; i++)
+        if(player_manager.playerList != null)
         {
-            if(playerSELECTED)
-                playerList[i].setText(String.valueOf(playerHPs[i]));
+            for(int i = 0; i < player_manager.playerList.length; i++)
+            {
+                if (player_manager.playerList[i] != null)
+                {
+                    Player player = player_manager.playerList[i];
+                    if (playerSELECTED)
+                        player_manager.playerList[i].player_obj.setText(String.valueOf(player.health));
 
-            if(poisonSELECTED)
-                playerList[i].setText(String.valueOf(poisonDMG[i]));
+                    if (poisonSELECTED)
+                        player_manager.playerList[i].player_obj.setText(String.valueOf(player.infect));
 
-            if(commanderSELECTED)
-                playerList[i].setText(String.valueOf(commanderHPs[i]));
+                    if (commanderSELECTED)
+                        player_manager.playerList[i].player_obj.setText(String.valueOf(player.commander));
+                }
+            }
         }
     }
 
@@ -369,73 +426,11 @@ public class MainActivity extends ActionBarActivity { //test test test
         setSelectedHP(-amount);
     }
 
-    public void selectOne(View v)
+    public void selectAmount(View v)
     {
-        amount = 1;
-        selectedAmount = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectTwo(View v)
-    {
-        amount = 2;
-        selectedAmount = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectThree(View v)
-    {
-        amount = 3;
-        selectedAmount = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectFour(View v)
-    {
-        amount = 4;
-        selectedAmount = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectFive(View v)
-    {
-        amount = 5;
-        selectedAmount = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectSix(View v)
-    {
-        amount = 6;
-        selectedAmount = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectSeven(View v)
-    {
-        amount = 7;
-        selectedAmount = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectEight(View v)
-    {
-        amount = 8;
-        selectedAmount = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectNine(View v)
-    {
-        amount = 9;
-        selectedAmount = (Button)v;
-        redrawButtons();
-    }
-
-    public void selectTen(View v)
-    {
-        amount = 10;
-        selectedAmount = (Button)v;
+        Button temp = (Button)v;
+        amount = Integer.parseInt(temp.getText().toString());
+        selectedAmount = temp;
         redrawButtons();
     }
 }
