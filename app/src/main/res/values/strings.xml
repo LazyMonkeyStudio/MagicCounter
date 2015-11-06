@@ -6,5 +6,6 @@
     <string name="title_activity_activity_player_select">activity_playerSelect</string>
     <string name="title_activity_set_players">SetPlayersActivity</string>
     <string name="title_activity_player_set">PlayerSetActivity</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5410324028241291/2591412563</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>

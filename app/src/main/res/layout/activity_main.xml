@@ -12,8 +12,8 @@
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id"
-        android:layout_x="14dp"
-        android:layout_y="143dp">
+        android:layout_x="24dp"
+        android:layout_y="8dp">
     </com.google.android.gms.ads.AdView>
 
     <Button

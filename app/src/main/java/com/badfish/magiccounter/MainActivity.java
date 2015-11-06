@@ -1,5 +1,6 @@
 package com.badfish.magiccounter;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,7 +14,10 @@ import android.widget.EditText;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import java.util.Date;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends ActionBarActivity { //test test test
@@ -61,6 +65,22 @@ public class MainActivity extends ActionBarActivity { //test test test
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Timer timer = new Timer();
+        //timer.schedule(new TimerTask() {
+        //    @Override
+        //    public void run() {
+        //        setContentView(R.layout.activity_splash); //set splash activity
+        //   }
+        //}, 3 * 1000);
+        //long startTime = System.currentTimeMillis();
+        //long elapsedTime = 0L;
+
+        //while (elapsedTime < 6*1000) {
+        //    if (elapsedTime==0L)
+        //        setContentView(R.layout.activity_splash);
+        //    elapsedTime = (new Date()).getTime() - startTime;
+        //}
+        //setContentView(R.layout.activity_main);
         //setContentView(R.layout.activity_players);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         AdView mAdView = (AdView) findViewById(R.id.adView);
@@ -175,6 +195,11 @@ public class MainActivity extends ActionBarActivity { //test test test
         onCreate_SetDefaultButtons();
         player_manager.reLoad();
         selectFirstPlayer();
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void selectFirstPlayer()
