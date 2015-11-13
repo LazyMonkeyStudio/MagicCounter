@@ -1,19 +1,22 @@
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context=".MainActivity"
-    android:id="@+id/absoluteLayout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/MainScreen"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id"
-        android:layout_x="24dp"
-        android:layout_y="8dp">
+        android:layout_x="14dp"
+        android:layout_y="143dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
     </com.google.android.gms.ads.AdView>
 
     <Button
@@ -23,7 +26,10 @@
         android:id="@+id/ten"
         android:layout_x="270dp"
         android:layout_y="50dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"
+        android:layout_above="@+id/nine"
+        android:layout_alignLeft="@+id/nine"
+        android:layout_alignStart="@+id/nine" />
 
     <Button
         android:layout_width="50dp"
@@ -32,7 +38,10 @@
         android:id="@+id/nine"
         android:layout_x="270dp"
         android:layout_y="90dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"
+        android:layout_above="@+id/eight"
+        android:layout_alignLeft="@+id/eight"
+        android:layout_alignStart="@+id/eight" />
 
     <Button
         android:layout_width="50dp"
@@ -41,7 +50,10 @@
         android:id="@+id/six"
         android:layout_x="270dp"
         android:layout_y="210dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"
+        android:layout_above="@+id/five"
+        android:layout_alignLeft="@+id/five"
+        android:layout_alignStart="@+id/five" />
 
     <Button
         android:layout_width="50dp"
@@ -50,7 +62,12 @@
         android:id="@+id/five"
         android:layout_x="270dp"
         android:layout_y="250dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"
+        android:layout_above="@+id/four"
+        android:layout_alignLeft="@+id/four"
+        android:layout_alignStart="@+id/four"
+ />
+
 
     <Button
         android:layout_width="50dp"
@@ -59,7 +76,11 @@
         android:id="@+id/three"
         android:layout_x="270dp"
         android:layout_y="330dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"
+        android:layout_below="@+id/four"
+        android:layout_alignLeft="@+id/four"
+        android:layout_alignStart="@+id/three"
+ />
 
     <Button
         android:layout_width="50dp"
@@ -68,16 +89,21 @@
         android:id="@+id/seven"
         android:layout_x="270dp"
         android:layout_y="170dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"
+        android:layout_above="@+id/six"
+        android:layout_alignLeft="@+id/six"
+        android:layout_alignStart="@+id/six" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="35dp"
         android:text="8"
         android:id="@+id/eight"
-        android:layout_x="270dp"
-        android:layout_y="130dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"
+        android:layout_above="@+id/seven"
+        android:layout_alignLeft="@+id/seven"
+        android:layout_alignStart="@+id/seven" />
+
 
     <Button
         android:layout_width="50dp"
@@ -86,7 +112,9 @@
         android:id="@+id/four"
         android:layout_x="270dp"
         android:layout_y="290dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="50dp"
@@ -95,16 +123,22 @@
         android:id="@+id/two"
         android:layout_x="270dp"
         android:layout_y="370dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"
+        android:layout_below="@+id/three"
+        android:layout_alignLeft="@+id/three"
+        android:layout_alignStart="@+id/three" />
 
     <Button
+        android:layout_alignStart="@+id/two"
+        android:layout_alignLeft="@+id/two"
+        android:layout_below="@+id/two"
         android:layout_width="50dp"
         android:layout_height="35dp"
         android:text="1"
         android:id="@+id/one"
         android:layout_x="270dp"
         android:layout_y="410dp"
-        android:onClick="selectAmount" />
+        android:onClick="selectAmount"/>
 
     <Button
         android:layout_width="70dp"
@@ -113,7 +147,12 @@
         android:id="@+id/regular"
         android:layout_x="-5dp"
         android:layout_y="490dp"
-        android:onClick="clickReg" />
+        android:onClick="clickReg"
+
+        android:layout_above="@+id/adView"
+        android:layout_alignLeft="@+id/adView"
+        android:layout_alignStart="@+id/adView"
+        android:layout_marginBottom="15dp" />
 
     <Button
         android:layout_width="75dp"
@@ -122,7 +161,11 @@
         android:id="@+id/poison"
         android:layout_x="65dp"
         android:layout_y="490dp"
-        android:onClick="clickPois" />
+        android:onClick="clickPois"
+        android:layout_alignTop="@+id/regular"
+        android:layout_toRightOf="@+id/regular"
+        android:layout_toEndOf="@+id/regular"
+        android:layout_marginBottom="15dp"/>
 
     <Button
         android:layout_width="115dp"
@@ -131,7 +174,10 @@
         android:id="@+id/commander"
         android:layout_x="140dp"
         android:layout_y="490dp"
-        android:onClick="clickCommnd" />
+        android:onClick="clickCommnd"
+        android:layout_alignTop="@+id/poison"
+        android:layout_toRightOf="@+id/poison"
+        android:layout_toEndOf="@+id/poison" />
 
     <Button
         android:layout_width="70dp"
@@ -140,6 +186,24 @@
         android:id="@+id/reset"
         android:layout_x="255dp"
         android:layout_y="490dp"
-        android:onClick="resetHPs" />
+        android:onClick="resetHPs"
+        android:layout_alignTop="@+id/commander"
+        android:layout_toRightOf="@+id/commander"
+        android:layout_toEndOf="@+id/commander" />
 
-</AbsoluteLayout>
+    <View
+        android:id="@+id/top"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible"/>
+
+    <View
+        android:id="@+id/left"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"/>
+
+
+</RelativeLayout>
